@@ -1,30 +1,22 @@
 const express = require('express')
 const app = express()
-
-let urls = [
-  {
-    id: 1,
-    shortened: 'abcdef',
-    original: 'https://fullstackopen.com/',
-    createdAt: 2020
-  },
-  {
-    id: 1,
-    shortened: 'ghijk',
-    original: 'https://www.google.com/',
-    createdAt: 2020
-  }
-]
-
-app.get('/:url', async (request, response) => {
-  const shortened_url = request.params.url
-  const url = await urls.find(u => u.shortened == shortened_url)
-  console.log(url)
-  response.send(url.original)
-})
+app.use(express.json())
+const mongoose = require('mongoose')
+const config = require('./config')
+const urlRouter = require('./router')
 
 
-const PORT = 3001
+mongoose.connect(config.MONGODB_URI,
+  { useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+  })
+
+app.get('/favicon.ico', (req, res) => res.status(204))
+app.use('', urlRouter)
+
+const PORT = config.PORT
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`)
 })
