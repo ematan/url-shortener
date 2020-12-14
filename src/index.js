@@ -1,10 +1,8 @@
 const express = require('express')
 const app = express()
-app.use(express.json())
 const mongoose = require('mongoose')
 const config = require('./config')
 const urlRouter = require('./router')
-
 
 mongoose.connect(config.MONGODB_URI,
   { useNewUrlParser: true,
@@ -13,6 +11,7 @@ mongoose.connect(config.MONGODB_URI,
     useCreateIndex: true
   })
 
+app.use(express.json())
 app.get('/favicon.ico', (req, res) => res.status(204))
 app.use('', urlRouter)
 

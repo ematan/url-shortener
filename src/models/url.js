@@ -13,6 +13,6 @@ urlSchema.set('toJSON', {
   }
 })
 
-urlSchema.index({createdAt:1}, {expires: '1m'})
+urlSchema.index({ createdAt:1 }, { expires: '1m' })
 
 module.exports = mongoose.model('DB_url', urlSchema)
