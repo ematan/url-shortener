@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const config = require('../config')
 
 const urlSchema = new mongoose.Schema({
   shortened: { type: String, unique: true, required: true },
@@ -13,6 +14,9 @@ urlSchema.set('toJSON', {
   }
 })
 
-urlSchema.index({ createdAt:1 }, { expires: '1m' })
+const timeLimit = config.RUN_MODE === 'TEST'? 60 : 60*60*24*7
+//console.log(timeLimit)
+
+urlSchema.index({ createdAt:1 }, { expireAfterSeconds: timeLimit })
 
 module.exports = mongoose.model('DB_url', urlSchema)
