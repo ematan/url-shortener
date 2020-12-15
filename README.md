@@ -1,4 +1,5 @@
 # Url-shortener
+[![Build Status](https://travis-ci.com/ematan/url-shortener.svg?branch=main)](https://travis-ci.org/ematan/url-shortener)
 
 
 ## Instructions:
