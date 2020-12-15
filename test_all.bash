@@ -2,12 +2,10 @@
 
 export NODE_ENV=test
 
-runTests() {
-   jest --verbose --runInBand -- "${@}"
-   rc=$?
-   test ${rc} -eq 0 \
+run_tests() {
+  jest --verbose --runInBand -- "${@}" \
     && { echo "[PASS]"; } \
-    || { echo "[FAIL]"; exit ${rc}; }
+    || { echo "[FAIL]"; exit 1; }
 }
 
 sleep_for() {
@@ -19,8 +17,18 @@ sleep_for() {
   done
 }
 
-runTests test/unit-tests.test.js test/integration-tests.test.js
+run_all() {
+  run_tests test/unit-tests.test.js test/integration-tests.test.js
+  sleep_for 120
+  run_tests test/ttl.test.js
+}
 
-sleep_for 120
-
-runTests test/ttl.test.js
+if test $# -eq 0; then
+  run_all
+else
+  for f in "${@}"; do
+    echo "${f}"
+    test -f "${f}" || { echo "[ERROR] '${f}' does not exist"; exit 1; }
+  done
+  run_tests "${@}"
+fi
