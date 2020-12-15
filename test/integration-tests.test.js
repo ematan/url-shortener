@@ -15,12 +15,13 @@ beforeEach(async () => {
 })
 
 describe('GET endpoint', () => {
-  test('Api returns correct original url', async () => {
+  test('Api redirects to correct original url', async () => {
     const result = await api
       .get(`/${initialUrls[0].shortened}`)
-      .expect(200)
-      .expect('Content-Type', /text\/html/)
-    expect(result.text).toBe(initialUrls[0].original)
+      .expect(302)
+      .expect('Content-Type', 'text/plain; charset=utf-8')
+    expect(result.header.location).toBe(initialUrls[0].original)
+    expect(result.text).toBe(`Found. Redirecting to ${initialUrls[0].original}`)
   })
   test('Api returns 404 if url not in db', async () => {
     await api
@@ -56,16 +57,18 @@ describe('POST endpoint', () => {
   })
   test('return value can be used to GET original url', async () => {
     const data = { url:'ftp://stackoverflow.com/' }
-    const shortened = await api
+    const postResult = await api
       .post('/')
       .send(data)
       .expect(200)
       .expect('Content-Type', /text\/html/)
+    const short = postResult.text.slice(-16)
     const result = await api
-      .get(`/${shortened.text}`)
-      .expect(200)
-      .expect('Content-Type', /text\/html/)
-    expect(result.text).toBe(data.url)
+      .get(`/${short}`)
+      .expect(302)
+      .expect('Content-Type', 'text/plain; charset=utf-8')
+    expect(result.header.location).toBe(data.url)
+    expect(result.text).toBe(`Found. Redirecting to ${data.url}`)
   })
 })
 
