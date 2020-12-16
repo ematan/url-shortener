@@ -1,5 +1,5 @@
 # Url-shortener
-[![Build Status](https://travis-ci.com/ematan/url-shortener.svg?branch=main)](https://travis-ci.org/ematan/url-shortener)
+[![Build Status](https://travis-ci.com/ematan/url-shortener.svg?branch=main)](https://travis-ci.com/ematan/url-shortener)
 
 
 ## Instructions:
@@ -22,7 +22,7 @@
 
 
 ## Testing:
-For testing purposes the TTL has been reduced to 60 seconds.
+For testing purposes the TTL has been reduced to 60 seconds. The background task that removes expired documents in MongoDB runs every 60 seconds, so after 120 seconds the database should be empty of all records.
 
 To run all tests (will take several minutes due to forced sleep between tests):
 

@@ -17,12 +17,13 @@ urlRouter.post('/', async (req, res) => {
   try {
     const origUrl = new URL(body.url)
     const host = req.headers.host
+    const protocol = req.protocol
     const url = new DB_url({
       original: origUrl,
       shortened: nanoid(16)
     })
     await url.save()
-    res.send(`${host}/${url.shortened}`)
+    res.send(`${protocol}://${host}/${url.shortened}`)
   } catch (error) {
     return res.status(400).send({ error: error })
   }
