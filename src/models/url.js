@@ -2,7 +2,11 @@ const mongoose = require('mongoose')
 const config = require('../config')
 
 const urlSchema = new mongoose.Schema({
-  shortened: { type: String, unique: true, required: true },
+  shortened: {
+    type: String,
+    unique: true,
+    required: true,
+  },
   original: { type: String, required: true }
 }, { timestamps: true })
 
